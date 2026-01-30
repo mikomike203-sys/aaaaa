@@ -10,13 +10,14 @@ type ChecklistItem = {
 // GET /api/milestones/[id] - Fetch milestone with checklist
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const { data: milestone, error } = await supabaseAdmin
             .from('project_milestones')
             .select('*, project:projects(title, client_id, developer_id, commissioner_id)')
-            .eq('id', params.id)
+            .eq('id', id)
             .single();
 
         if (error) {
@@ -38,8 +39,9 @@ export async function GET(
 // PATCH /api/milestones/[id] - Update milestone checklist
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const body = await request.json();
         const { checklist, ...otherUpdates } = body;
@@ -68,7 +70,7 @@ export async function PATCH(
         const { data: milestone, error } = await supabaseAdmin
             .from('project_milestones')
             .update(updateData)
-            .eq('id', params.id)
+            .eq('id', id)
             .select()
             .single();
 
@@ -87,13 +89,14 @@ export async function PATCH(
 // DELETE /api/milestones/[id] - Delete milestone
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const { error } = await supabaseAdmin
             .from('project_milestones')
             .delete()
-            .eq('id', params.id);
+            .eq('id', id);
 
         if (error) {
             console.error('Error deleting milestone:', error);

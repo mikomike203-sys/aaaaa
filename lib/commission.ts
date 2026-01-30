@@ -104,7 +104,8 @@ export async function createCommissionRecords(
         }
 
         const tier = commissioner.tier as CommissionerTier;
-        const referrerId = commissioner.user?.referrer_id;
+        const userObj: any = Array.isArray(commissioner.user) ? commissioner.user[0] : commissioner.user;
+        const referrerId = userObj?.referrer_id;
 
         // Calculate payouts
         const breakdown = calculatePayouts(projectValue, tier, !!referrerId);

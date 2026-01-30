@@ -1,3 +1,6 @@
+// Support & Knowledge Base portal
+'use client';
+
 import TicketList from '@/components/support/TicketList';
 import { useState } from 'react';
 import { Book, HelpCircle, LifeBuoy, FileText } from 'lucide-react';

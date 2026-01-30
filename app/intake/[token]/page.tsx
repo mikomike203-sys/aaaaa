@@ -37,6 +37,8 @@ export default function IntakePage() {
     const [loading, setLoading] = useState(true);
     const [paymentLoading, setPaymentLoading] = useState(false);
     const [selectedMethod, setSelectedMethod] = useState<string>('card');
+    const [isScheduleOpen, setIsScheduleOpen] = useState(false);
+    const [scheduleLoading, setScheduleLoading] = useState(false);
 
     useEffect(() => {
         fetch(`/api/intake/${token}`)
@@ -82,6 +84,16 @@ export default function IntakePage() {
             console.error('Payment error:', error);
             setPaymentLoading(false);
         }
+    };
+
+    const handleScheduleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setScheduleLoading(true);
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setScheduleLoading(false);
+        setIsScheduleOpen(false);
+        alert('Meeting request sent! The commissioner will confirm via email.');
     };
 
     if (loading) {
@@ -244,26 +256,6 @@ export default function IntakePage() {
                                 </button>
                             </div>
 
-                            import {Dialog} from '@/components/ui/dialog';
-
-                            // ... (existing imports)
-
-                            export default function IntakePage() {
-    // ... (existing state)
-    const [isScheduleOpen, setIsScheduleOpen] = useState(false);
-                            const [scheduleLoading, setScheduleLoading] = useState(false);
-
-    const handleScheduleSubmit = async (e: React.FormEvent) => {
-                                e.preventDefault();
-                            setScheduleLoading(true);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-                            setScheduleLoading(false);
-                            setIsScheduleOpen(false);
-                            alert('Meeting request sent! The commissioner will confirm via email.');
-    };
-
-                            // ... (existing render)
 
                             {/* Schedule Call */}
                             <button

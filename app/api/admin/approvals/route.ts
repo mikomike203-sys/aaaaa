@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { db, supabaseAdmin } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         const newStatus = action === 'approve' ? 'approved' : 'rejected';
 
         // Update the role-specific table
-        const { error: roleError } = await db.supabaseAdmin
+        const { error: roleError } = await supabaseAdmin
             .from(table)
             .update({
                 kyc_status: newStatus,
@@ -35,14 +35,14 @@ export async function POST(req: Request) {
         // Also update the main user verified status if approved
         if (action === 'approve') {
             // Fetch user_id first
-            const { data: roleHeader } = await db.supabaseAdmin
+            const { data: roleHeader } = await supabaseAdmin
                 .from(table)
                 .select('user_id')
                 .eq('id', id)
                 .single();
 
             if (roleHeader?.user_id) {
-                await db.supabaseAdmin
+                await supabaseAdmin
                     .from('users')
                     .update({ verified: true })
                     .eq('id', roleHeader.user_id);

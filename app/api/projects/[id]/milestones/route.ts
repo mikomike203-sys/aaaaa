@@ -4,13 +4,14 @@ import { supabaseAdmin } from '@/lib/db';
 // GET /api/projects/[id]/milestones - Fetch all milestones for a project
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const { data: milestones, error } = await supabaseAdmin
             .from('project_milestones')
             .select('*')
-            .eq('project_id', params.id)
+            .eq('project_id', id)
             .order('created_at', { ascending: true });
 
         if (error) {
@@ -28,15 +29,16 @@ export async function GET(
 // POST /api/projects/[id]/milestones - Create a new milestone
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const body = await request.json();
 
         const { data: milestone, error } = await supabaseAdmin
             .from('project_milestones')
             .insert({
-                project_id: params.id,
+                project_id: id,
                 title: body.title,
                 description: body.description,
                 percent_amount: body.percent_amount || 0,

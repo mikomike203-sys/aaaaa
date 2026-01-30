@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { db, supabaseAdmin } from '@/lib/db';
 import { redirect } from 'next/navigation';
 import { AlertCircle, Check, X, ExternalLink } from 'lucide-react';
 import ApprovalActionButtons from '@/components/dashboard/admin/ApprovalActionButtons';
@@ -14,13 +14,13 @@ export default async function AdminApprovalsPage() {
     }
 
     // Fetch pending commissioners
-    const { data: pendingCommissioners } = await db.supabaseAdmin
+    const { data: pendingCommissioners } = await supabaseAdmin
         .from('commissioners')
         .select('*, user:users(*)')
         .eq('kyc_status', 'pending');
 
     // Fetch pending developers
-    const { data: pendingDevelopers } = await db.supabaseAdmin
+    const { data: pendingDevelopers } = await supabaseAdmin
         .from('developers')
         .select('*, user:users(*)')
         .eq('kyc_status', 'pending'); // Or 'submitted' depending on logic

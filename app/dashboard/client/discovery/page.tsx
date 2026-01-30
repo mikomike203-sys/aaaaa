@@ -88,7 +88,9 @@ export default function DiscoveryPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {loading ? (
                     Array(6).fill(0).map((_, i) => (
-                        <Card key={i} className="h-80 animate-pulse bg-gray-50 border-none" />
+                        <Card key={i} className="h-80 animate-pulse bg-gray-50 border-none">
+                            <div className="h-full w-full" />
+                        </Card>
                     ))
                 ) : commissioners.length === 0 ? (
                     <div className="col-span-full py-20 text-center">

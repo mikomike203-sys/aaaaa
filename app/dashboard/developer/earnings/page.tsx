@@ -12,7 +12,8 @@ import {
     Clock,
     Download,
     BarChart3,
-    ShieldCheck
+    ShieldCheck,
+    Calendar
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 

@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { db, supabaseAdmin } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         const body = await req.json();
         const userId = (session.user as any).id;
 
-        const { error } = await db.supabaseAdmin
+        const { error } = await supabaseAdmin
             .from('commissioners')
             .update({
                 bio: body.bio,
